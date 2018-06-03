@@ -1,0 +1,39 @@
+# references:
+
+# Travis-CI - Environment Variables : https://docs.travis-ci.com/user/environment-variables/
+# Travis-CI - Objective-C / Swift : https://docs.travis-ci.com/user/languages/objective-c/
+# XCPretty : https://github.com/supermarin/xcpretty#usage
+
+osx_image: xcode9.3
+language: objective-c
+
+# Environment Variables
+env:
+  - WORKSPACE="Example/Example.xcworkspace"
+  - SCHEME="Example"
+  - DESTINATION="platform=iOS Simulator,name=iPhone 8,OS=11.3"
+
+# CocoaPods
+# cache: cocoapods
+# podfile: Example/Podfile
+
+before_install:
+  # CocoaPods
+  #- gem install cocoapods --quiet # Since Travis is not always on latest version
+
+before_script:
+  - rvm get head
+  - gem install xcpretty
+
+  # CocoaPods
+  # - pod install
+  # - pod install --project-directory=Example #For non-standard Podfile locations
+
+script:
+# Debug Commands
+# - ls -R # Current file tree for debugging
+# - xcodebuild -list #List avaiable versions/simulators
+# - xcodebuild -workspace Example/FastXCTest.xcworkspace -list #List Schemes
+
+  - set -o pipefail && xcodebuild test -enableCodeCoverage YES -workspace $WORKSPACE -scheme $SCHEME -destination $DESTINATION ONLY_ACTIVE_ARCH=NO CODE_SIGN_IDENTITY=\"\" CODE_SIGNING_REQUIRED=NO | xcpretty
+  - pod lib lint # --allow-warnings
