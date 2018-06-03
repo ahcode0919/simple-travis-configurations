@@ -7,7 +7,7 @@ for your project.
 
 ## Configurations
 
-[iOS / MacOSX (Swift / Objective-c)](#iOS-/-MacOSX)
+[iOS / MacOSX (Swift / Objective-c)](#ios--macosx)
 
 
 
