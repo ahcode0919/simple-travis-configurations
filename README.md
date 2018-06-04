@@ -28,20 +28,22 @@ does not make use of it.
 osx_image: xcode9.3
 language: objective-c
 
-# Environment Variables
-env:
-  - WORKSPACE="Example/Example.xcworkspace"
-  - SCHEME="Example"
-  - DESTINATION="platform=iOS Simulator,name=iPhone 8,OS=11.3"
-  - ONLY_ACTIVE_ARCHITECTURE=NO
-
 # CocoaPods
 # cache: cocoapods
 # podfile: Example/Podfile
 
 before_install:
+  - WORKSPACE="Example/Example.xcworkspace"
+  - SCHEME="Example"
+  - DESTINATION="platform=iOS Simulator,name=iPhone 8,OS=11.3"
+
+  # Debug Commands
+  - ls -R                                 # Current file tree
+  - xcodebuild -list                        # List avaiable versions/simulators
+  - xcodebuild -workspace $WORKSPACE -list  # List Schemes
+
   # CocoaPods
-  #- gem install cocoapods --quiet # Since Travis is not always on latest version
+  - gem install cocoapods --quiet # Since Travis is not always on latest version
 
 before_script:
   - rvm get head
@@ -52,11 +54,18 @@ before_script:
   # - pod install --project-directory=Example #For non-standard Podfile locations
 
 script:
-# Debug Commands
-# - ls -R # Current file tree for debugging
-# - xcodebuild -list #List avaiable versions/simulators
-# - xcodebuild -workspace $WORKSPACE -list #List Schemes
 
-  - set -o pipefail && xcodebuild test -enableCodeCoverage YES -workspace $WORKSPACE -scheme $SCHEME -destination $DESTINATION ONLY_ACTIVE_ARCH=$ONLY_ACTIVE_ARCHITECTURE CODE_SIGN_IDENTITY=\"\" CODE_SIGNING_REQUIRED=NO | xcpretty
+  - |
+    set -o pipefail && \
+    xcodebuild test \
+    -enableCodeCoverage YES \
+    -workspace $WORKSPACE \
+    -scheme $SCHEME \
+    -destination $DESTINATION \
+    ONLY_ACTIVE_ARCH=NO \
+    CODE_SIGN_IDENTITY=\"\" \
+    CODE_SIGNING_REQUIRED=NO | \
+    xcpretty
   - pod lib lint # --allow-warnings
+
   ```
