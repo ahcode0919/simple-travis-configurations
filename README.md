@@ -10,13 +10,14 @@ for your project.
 [iOS / MacOSX (Swift / Objective-c)](#ios--macosx)
 
 
-
 ## iOS / MacOSX
 
 The sample iOS `ios.travis.yml` file is configured to use XCPretty by default to sanitize the
 build output. It also contains the commands necessary for basic projects that are implementing cocoapods.
 The `WORKSPACE`, `SCHEME`, and `DESTINATION` environment variables need to be updated with the correct ones from your project. `WORKSPACE` and its argument in the `xcodebuild` command can be removed if your project
 does not make use of it.
+
+* Note: `CODE_SIGNING_ALLOWED=YES` is needed for some Framework Only CocoaPods builds
 
 ```
 # references:
@@ -64,7 +65,8 @@ script:
     -destination $DESTINATION \
     ONLY_ACTIVE_ARCH=NO \
     CODE_SIGN_IDENTITY=\"\" \
-    CODE_SIGNING_REQUIRED=NO | \
+    CODE_SIGNING_REQUIRED=NO \
+    CODE_SIGNING_ALLOWED=YES | \
     xcpretty
   - pod lib lint # --allow-warnings
 
