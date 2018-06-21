@@ -1,3 +1,6 @@
+# Author: Aaron Hinton
+# MIT License
+
 # references:
 
 # Travis-CI - Environment Variables : https://docs.travis-ci.com/user/environment-variables/
@@ -14,7 +17,6 @@ language: objective-c
 before_install:
   - WORKSPACE="Example/Example.xcworkspace"
   - SCHEME="Example"
-  - DESTINATION="platform=iOS Simulator,name=iPhone 8,OS=11.3"
 
   # Debug Commands
   - ls -R                                 # Current file tree
@@ -40,7 +42,7 @@ script:
     -enableCodeCoverage YES \
     -workspace $WORKSPACE \
     -scheme $SCHEME \
-    -destination $DESTINATION \
+    -destination "platform=iOS Simulator,name=iPhone 8,OS=11.3" \
     ONLY_ACTIVE_ARCH=NO \
     CODE_SIGN_IDENTITY=\"\" \
     CODE_SIGNING_REQUIRED=NO \
