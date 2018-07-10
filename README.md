@@ -16,6 +16,8 @@ for your project.
 
 [Mac OSX](#macosx)
 
+[Python](#python)
+
 ## iOS
 
 The sample iOS `ios.travis.yml` file is configured to use XCPretty by default to sanitize the
@@ -133,6 +135,49 @@ script:
     CODE_SIGNING_REQUIRED=NO \
     CODE_SIGNING_ALLOWED=NO | \
     xcpretty
+```
+
+## Python
+
+The sample Python `python.travis.yml` file is configured to compile all the files
+under the current directory using the `compile-files.py` script and then run any unit tests.
+
+`python.travis.yml`
+
+```
+# references:
+# Travis-CI - Python : https://docs.travis-ci.com/user/languages/python/
+
+language: python
+python:
+  - "3.6"
+
+# command to install dependencies
+# install:
+#  - pip install -r requirements.txt
+
+# command to run tests
+script:
+  - python compile-files.py
+  - pytest # or py.test for Python versions 3.5 and below
+```
+
+`compile-files.py`
+
+```
+import compileall
+import os
+import sys
+
+# Get path of this file's directory
+directory = os.path.dirname(os.path.realpath(__file__))
+
+# Check that files are compileable
+success = compileall.compile_dir(dir=directory, maxlevels=20, force=True)
+
+# Return appropriate exit code
+sys.exit(0) if success else sys.exit(1)
+
 ```
 
 ## Author
